@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const bookingSchema = ({
+  booking_id: {type: Number, unique: true},
   home_id: Number,
   user_id: Number,
   created_at: {type: Date, default: Date.now},
@@ -12,6 +13,7 @@ const bookingSchema = ({
 });
 
 const pricingSchema = ({
+  pricing_id: {type: Number, unique: true},
   home_id: Number,
   host_id: Number,
   price_default: Number,
