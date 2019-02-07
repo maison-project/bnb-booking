@@ -1,17 +1,16 @@
 {
-  "name": "",
+  "name": "booking-module",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "booking request module for bread4Bed site",
+  "author": "Delos Elder",
   "license": "",
   "engines": {
     "node": ">=6.13.0"
   },
-  "scripts": {
-  },
-  "dependencies": {
-  },
+  "scripts": {},
+  "dependencies": {},
   "devDependencies": {
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
+    "mongoose": "^5.4.10"
   }
 }
