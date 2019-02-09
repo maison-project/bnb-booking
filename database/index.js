@@ -3,60 +3,42 @@ const mysqlConfig = require('./sql-config.js');
 
 const connection = mysql.createConnection(mysqlConfig);
 
-const getAllLines = function(callback) {
-  const queryStr = 'SELECT * FROM `service_lines`';
-  connection.query(queryStr, (err, lines) => {
+const getBookingsById = function(homeId, callback) {
+  // console.log('CHECKING DATABASE FOR ', homeId);
+  const queryStr = 'SELECT * FROM `bookings` WHERE bookings.home_id = ?';
+  connection.query(queryStr, [homeId], (err, bookings) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, lines);
+      callback(null, bookings);
     }
   })
 }
 
-const getStopsById = function(lineId, callback) {
-  const queryStr = 'SELECT * FROM `stations` INNER JOIN `stops` ON stops.line_id = ? && stations.id = stops.station_id';
-  connection.query(queryStr, [lineId], (err, stops) => {
+const getPricingById = function(homeId, callback) {
+  const queryStr = 'SELECT * FROM `prices` WHERE bookings.home_id = ?';
+  connection.query(queryStr, [homeId], (err, pricing) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, stops);
+      callback(null, pricing);
     }
   })
 }
 
-const makeStopFav = function(stopId, callback) {
-  connection.query(
-    'SELECT stations.is_favorite FROM `stations` WHERE stations.id = ?',
-    stopId,
-    (err, favStatus) => {
-      const newStatus = (favStatus[0].is_favorite === 0) ? 1 : 0;
-      const queryStr = 'UPDATE `stations` SET stations.is_favorite = ? WHERE stations.id = ?';
-      connection.query(queryStr, [newStatus, stopId], (err) => {
-        if (err) {
-          callback(err);
-        } else {
-          callback(null);
-        }
-      });
-    }
-  );
-}
-
-const getAllStations = function(callback) {
-  const queryStr = 'SELECT * FROM `stations` ORDER BY stations.is_favorite DESC';
-  connection.query(queryStr, (err, stations) => {
+const createBooking = function(booking, callback) {
+  const queryStr = 'INSERT INTO `bookings` (home_id, user_id, check_in, check_out, price_per_night, no_guests) VALUES (?, ?, ?, ?, ?, ?)';
+  connection.query(queryStr, [newStatus, stopId], (err) => {
     if (err) {
       callback(err);
     } else {
-      callback(null, stations);
+      callback(null);
     }
-  })
+  });
 }
 
 module.exports = {
-  getAllLines,
-  getStopsById,
-  makeStopFav,
-  getAllStations
+  getBookingsById,
+  getPricingById,
+  createBooking
 };

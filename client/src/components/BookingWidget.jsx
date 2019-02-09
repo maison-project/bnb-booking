@@ -1,17 +1,44 @@
 import React from 'react';
-import Line from './Line.jsx';
-import Stop from './Stop.jsx';
+import BookingCalendar from './BookingCalendar.jsx';
 
-class Lines extends React.Component {
+class BookingWidget extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      price: null,
+      checkin: null,
+      checkout: null,
+      guests: 1
     };
   }
-  componentDidMount() {
-  }
   render() {
+    return (
+      <div>Container
+
+        <div>Price
+          per night
+        </div>
+
+        <div>Calendars
+          <div>
+            <span onClick={this.props.getBookings}>Checkin
+            </span>
+            <span>Checkout
+            </span>
+          </div>
+        </div>
+
+        <div>Select
+          <button>Select Guests</button>
+        </div>
+
+        <div>Button
+          <button>Book</button>
+        </div>
+
+      </div>
+    )
   }
 }
 
-export default Lines;
+export default BookingWidget;
