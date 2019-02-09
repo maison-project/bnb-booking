@@ -6,21 +6,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookings: []
-    }
+      bookings: [],
+    };
     this.getBookings = this.getBookings.bind(this);
   }
+
   getBookings() {
     const homeId = 150;
     fetch('/api/bookings/' + homeId, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     })
-      .then(function(response) {
-        return response.json();
-      })
+      .then((response) => { response.json(); })
       .then((bookings) => {
         console.log(bookings);
         this.setState({
@@ -28,12 +27,13 @@ class App extends React.Component {
         });
       });
   }
+
   render() {
     return (
       <div>
         Hello
         <div>
-          <BookingWidget getBookings={this.getBookings}/>
+          <BookingWidget getBookings={this.getBookings} />
         </div>
       </div>
     );

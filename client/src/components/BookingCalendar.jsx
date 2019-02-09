@@ -1,7 +1,5 @@
-import React from 'react';
+// import React from 'react';
 
-const BookingCalendar = (props) => {
-  
-}
+const BookingCalendar = () => {};
 
 export default BookingCalendar;
