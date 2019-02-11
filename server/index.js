@@ -10,31 +10,36 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/../client/dist'));
 
-app.get('/api/lines', (req, res) => {
-  db.getAllLines((err, lines) => {
-    res.json(lines);
+app.get('/api/bookings/:homeId', (req, res) => {
+  // console.log('GETTING BOOKINGS FOR ', req.params.homeId);
+  db.getBookingsById(req.params.homeId, (err, bookings) => {
+    if (err) {
+      //TO DO
+    } else {
+      res.json(bookings);  
+    }
   })
 });
 
-app.get('/api/lines/:lineId', (req, res) => {
-  db.getStopsById(req.params.lineId, (err, stops) => {
-    res.json(stops);
+app.get('/api/pricing/:homeId', (req, res) => {
+  db.getPricingById(req.params.homeId, (err, pricing) => {
+    if (err) {
+      //send error
+    } else {
+      res.json(pricing);  
+    }
   })
 });
 
-app.post('/api/lines/:stopId', (req, res) => {
-  db.makeStopFav(req.params.stopId, (err) => {
+app.post('/api/pricing/:homeId', (req, res) => {
+  //get data from req object: user_id, check_in, check_out, price_per_night, no_guests
+  const booking = req.params.homeId;
+  db.createBooking(booking, (err) => {
     if (err) {
       //send error
     } else {
       res.send('success');  
     }
-  })
-});
-
-app.get('/api/trips', (req, res) => {
-  db.getAllStations((err, stations) => {
-    res.json(stations);
   })
 });
 
