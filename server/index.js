@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const db = require('../database');
+const { cal } = require('./calendarHelper');
 
 const app = express();
 const PORT = 3000;
@@ -12,12 +13,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../client/dist')));
 
 app.get('/api/bookings/:homeId', (req, res) => {
-  // console.log('GETTING BOOKINGS FOR ', req.params.homeId);
   db.getBookingsById(req.params.homeId, (err, bookings) => {
     if (err) {
       // TO DO
     } else {
-      res.json(bookings);
+      cal(bookings, (error, grid) => {
+        if (error) {
+          console.log('no calendar');
+        } else {
+          res.json(grid);
+        }
+      });
     }
   });
 });

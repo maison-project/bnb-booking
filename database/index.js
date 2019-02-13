@@ -4,7 +4,6 @@ const mysqlConfig = require('./sql-config.js');
 const connection = mysql.createConnection(mysqlConfig);
 
 const getBookingsById = (homeId, callback) => {
-  // console.log('CHECKING DATABASE FOR ', homeId);
   const queryStr = 'SELECT * FROM `bookings` WHERE bookings.home_id = ?';
   connection.query(queryStr, [homeId], (err, bookings) => {
     if (err) {

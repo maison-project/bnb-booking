@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BookingWidget from './components/BookingWidget.jsx'
+import BookingWidget from './components/BookingWidget.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookings: [],
+      calendar: null,
+      updated: false,
     };
-    this.getBookings = this.getBookings.bind(this);
   }
 
-  getBookings() {
+  componentDidMount() {
+    this.getCalendar();
+  }
+
+  getCalendar() {
     const homeId = 150;
     fetch('/api/bookings/' + homeId, {
       method: 'GET',
@@ -19,22 +23,27 @@ class App extends React.Component {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => { response.json(); })
-      .then((bookings) => {
-        console.log(bookings);
+      .then((response) => {
+        return response.json();
+      })
+      .then((grid) => {
         this.setState({
-          bookings: bookings
+          calendar: grid,
         });
       });
+    this.setState({
+      updated: true,
+    });
   }
 
   render() {
     return (
       <div>
-        Hello
-        <div>
-          <BookingWidget getBookings={this.getBookings} />
-        </div>
+        {this.state.calendar &&
+          <div>
+            <BookingWidget calendar={this.state.calendar} />
+          </div>
+        } 
       </div>
     );
   }
