@@ -40,30 +40,42 @@ const Button = styled.button`
 `;
 
 const Calendar = styled.div`
-  z-index: 1
-  position: absolute
-  top: 51px
-  left: 0px
+  display: inline-block
 `;
-
 
 export default class BookingWidget extends React.Component {
   constructor() {
     super();
     this.state = {
-      calView: false,
-      checkin: null,
+      checkin: 'Check in',
+      checkout: 'Check out',
+      view: null,
+      guests: '1 guest',
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.selectDate = this.selectDate.bind(this);
+    this.submitBooking = this.submitBooking.bind(this);
+    this.selectGuests = this.selectGuests.bind(this);
   }
 
-  handleClick(event) {
-    // change state to conditionally render calendar
+  selectDate(date) {
+    const view = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
     this.setState({
-      calView: true,
+      [view]: date,
+      view: view,
     });
-    // find target and insert html for calendar
-    console.log(this.props.calendar);
+  }
+
+  selectGuests(event) {
+    const guests = event.target.value;
+    this.setState({
+      guests: guests,
+    });
+  }
+
+  submitBooking(event) {
+    console.log(event);
+    event.preventDefault();
+    // this.props.postBooking(booking);
   }
 
   render() {
@@ -89,19 +101,23 @@ export default class BookingWidget extends React.Component {
           </div>
 
           <div>
-            <form>
+            <form onSubmit={this.submitBooking}>
 
               <div>
                 <label>
                   Dates
                 </label>
               </div>
-              <input type="text" value="Check in" onClick={this.handleClick} />
-              <input type="text" value="Check out" />
+
+              <input type="text" value={this.state.checkin} />
+              <input type="text" value={this.state.checkout} />
 
               <Calendar>
                 <div>
-                  <BookingCalendar calendar={this.props.calendar} />
+                  <BookingCalendar
+                    calendar={this.props.calendar}
+                    selectDate={this.selectDate}
+                  />
                 </div>
               </Calendar>
 
@@ -110,7 +126,13 @@ export default class BookingWidget extends React.Component {
                   Guests
                 </label>
               </div>
-              <input type="text" value="1 guest" />
+              <select value={this.state.guests} onChange={this.selectGuests}>
+                <option value="1 guest">1 guest</option>
+                <option value="2 guests">2 guests</option>
+                <option value="3 guests">3 guests</option>
+                <option value="4 guests">4 guests</option>
+                <option value="5 guests">5 guests</option>
+              </select>
 
               <div>
                 <Button>
