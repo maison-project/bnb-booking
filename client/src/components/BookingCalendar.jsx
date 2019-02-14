@@ -8,7 +8,7 @@ export default class BookingCalendar extends React.Component {
   }
 
   handleClick(event) {
-    this.props.selectDate(moment(event.target.id).format('ddd, MMM D'));
+    this.props.selectDate(event.target.id);
   }
 
   render() {

@@ -37,9 +37,10 @@ class App extends React.Component {
   }
 
   postBooking(booking) {
-    const homeId = 150;
-    fetch('/api/bookings/' + homeId, {
+    console.log(`${booking} was sent`);
+    fetch('/api/bookings/', {
       method: 'POST',
+      body: JSON.stringify({booking: booking}),
       headers: {
         'Content-Type': 'application/json',
       },
