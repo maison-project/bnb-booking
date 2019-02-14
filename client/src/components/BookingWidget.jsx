@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import BookingCalendar from './BookingCalendar.jsx';
 
@@ -40,30 +41,73 @@ const Button = styled.button`
 `;
 
 const Calendar = styled.div`
-  z-index: 1
-  position: absolute
-  top: 51px
-  left: 0px
+  display: inline-block
 `;
-
 
 export default class BookingWidget extends React.Component {
   constructor() {
     super();
     this.state = {
-      calView: false,
-      checkin: null,
+      checkin: {
+        text: 'Check in',
+        val: null,
+      },
+      checkout: {
+        text: 'Check out',
+        val: null,
+      },
+      view: null,
+      guests: {
+        text: '1 guest',
+        val: 1,
+      },
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.selectDate = this.selectDate.bind(this);
+    this.submitBooking = this.submitBooking.bind(this);
+    this.selectGuests = this.selectGuests.bind(this);
   }
 
-  handleClick(event) {
-    // change state to conditionally render calendar
+  selectDate(dateVal) {
+    const dateText = moment(dateVal).format('ddd, MMM D');
+    const newView = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
     this.setState({
-      calView: true,
+      [newView]: {
+        text: dateText,
+        val: dateVal,
+      },
+      view: newView,
     });
-    // find target and insert html for calendar
-    console.log(this.props.calendar);
+  }
+
+  selectGuests(event) {
+    const guestsText = event.target.value;
+    const guestsVal = guestsText[0];
+    this.setState({
+      guests: {
+        text: guestsText,
+        val: guestsVal,
+      },
+    });
+  }
+
+  submitBooking(event) {
+    const { checkin, checkout, guests } = this.state;
+    const home_id = 150;
+    const user_id = 485;
+    const check_in = moment(checkin.val).format('YYYY/MM/DD');
+    const check_out = moment(checkout.val).format('YYYY/MM/DD');
+    const price_per_night = 89;
+    const no_guests = guests.val;
+    const booking = [
+      home_id,
+      user_id,
+      check_in,
+      check_out,
+      price_per_night,
+      no_guests,
+    ];
+    this.props.postBooking(booking);
+    event.preventDefault();
   }
 
   render() {
@@ -89,19 +133,23 @@ export default class BookingWidget extends React.Component {
           </div>
 
           <div>
-            <form>
+            <form onSubmit={this.submitBooking}>
 
               <div>
                 <label>
                   Dates
                 </label>
               </div>
-              <input type="text" value="Check in" onClick={this.handleClick} />
-              <input type="text" value="Check out" />
+
+              <input type="text" value={this.state.checkin.text} />
+              <input type="text" value={this.state.checkout.text} />
 
               <Calendar>
                 <div>
-                  <BookingCalendar calendar={this.props.calendar} />
+                  <BookingCalendar
+                    calendar={this.props.calendar}
+                    selectDate={this.selectDate}
+                  />
                 </div>
               </Calendar>
 
@@ -110,7 +158,13 @@ export default class BookingWidget extends React.Component {
                   Guests
                 </label>
               </div>
-              <input type="text" value="1 guest" />
+              <select value={this.state.guests.text} onChange={this.selectGuests}>
+                <option value="1 guest">1 guest</option>
+                <option value="2 guests">2 guests</option>
+                <option value="3 guests">3 guests</option>
+                <option value="4 guests">4 guests</option>
+                <option value="5 guests">5 guests</option>
+              </select>
 
               <div>
                 <Button>

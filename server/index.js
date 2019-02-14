@@ -38,9 +38,9 @@ app.get('/api/pricing/:homeId', (req, res) => {
   });
 });
 
-app.post('/api/pricing/:homeId', (req, res) => {
-  // get data from req object: user_id, check_in, check_out, price_per_night, no_guests
-  const booking = req.params.homeId;
+app.post('/api/bookings', (req, res) => {
+  const booking = req.body.booking;
+  console.log(booking);
   db.createBooking(booking, (err) => {
     if (err) {
       // send error

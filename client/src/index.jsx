@@ -36,14 +36,31 @@ class App extends React.Component {
     });
   }
 
+  postBooking(booking) {
+    console.log(`${booking} was sent`);
+    fetch('/api/bookings/', {
+      method: 'POST',
+      body: JSON.stringify({booking: booking}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+  }
+
   render() {
     return (
       <div>
         {this.state.calendar &&
           <div>
-            <BookingWidget calendar={this.state.calendar} />
+            <BookingWidget 
+              calendar={this.state.calendar}
+              postBooking={this.postBooking}
+            />
           </div>
-        } 
+        }
       </div>
     );
   }
