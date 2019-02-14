@@ -1,5 +1,7 @@
 const moment = require('moment');
 
+// refactor to return 3 months of data
+
 const cal = (bookings, callback) => {
   const first = moment().startOf('month').day();
   const numDays = moment().daysInMonth();

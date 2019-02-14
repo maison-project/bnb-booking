@@ -15,6 +15,7 @@ const Wrapper = styled.section`
 
 const Price = styled.span`
   font-size: 22px
+  font-weight: 800
   font-family: Helvetica
 `;
 
@@ -37,17 +38,27 @@ const Button = styled.button`
   border-width: 2px
   border-style: solid
   border-color: #FE5A5A
-  width: 180px
+  width: 326px
 `;
 
 const Calendar = styled.div`
   display: inline-block
+  text-align: center
+  font-size: 18px
+  font-weight: 800
+  padding-top: 10px
+  padding-bottom: 10px
+  padding-right: 8px
+  padding-left: 8px
+  border: 1px solid #e4e4e4
+  width: 300px
 `;
 
 export default class BookingWidget extends React.Component {
   constructor() {
     super();
     this.state = {
+      view: null,
       checkin: {
         text: 'Check in',
         val: null,
@@ -56,7 +67,6 @@ export default class BookingWidget extends React.Component {
         text: 'Check out',
         val: null,
       },
-      view: null,
       guests: {
         text: '1 guest',
         val: 1,
@@ -69,13 +79,13 @@ export default class BookingWidget extends React.Component {
 
   selectDate(dateVal) {
     const dateText = moment(dateVal).format('ddd, MMM D');
-    const newView = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
+    const currView = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
     this.setState({
-      [newView]: {
+      [currView]: {
         text: dateText,
         val: dateVal,
       },
-      view: newView,
+      view: currView,
     });
   }
 
@@ -144,11 +154,15 @@ export default class BookingWidget extends React.Component {
               <input type="text" value={this.state.checkin.text} />
               <input type="text" value={this.state.checkout.text} />
 
+              <div>
+              </div>
+
               <Calendar>
                 <div>
                   <BookingCalendar
                     calendar={this.props.calendar}
                     selectDate={this.selectDate}
+                    changeMonth={this.props.changeMonth}
                   />
                 </div>
               </Calendar>
@@ -168,7 +182,7 @@ export default class BookingWidget extends React.Component {
 
               <div>
                 <Button>
-                  <input type="submit" value="Book" />
+                  Book
                 </Button>
               </div>
 

@@ -13,7 +13,8 @@ CREATE TABLE bookings (
   check_out date,
   price_per_night int NOT NULL,
   no_guests int NOT NULL,
-  PRIMARY KEY (booking_id)
+  PRIMARY KEY (booking_id),
+  UNIQUE KEY (booking_id)
 );
 
 CREATE TABLE prices (
@@ -24,7 +25,8 @@ CREATE TABLE prices (
   price_special int NOT NULL,
   cleaning_fee int NOT NULL,
   service_fee int NOT NULL,
-  PRIMARY KEY (pricing_id)
+  PRIMARY KEY (pricing_id),
+  UNIQUE KEY (pricing_id)
 );
 
 /* Execute from command line by typing:
