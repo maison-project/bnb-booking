@@ -4,10 +4,61 @@ import moment from 'moment';
 
 import BookingCalendar from './BookingCalendar.jsx';
 
+const Select = styled.select`
+  background-color: white
+  border: none
+  margin-top: 8px
+  margin-bottom: 8px
+  font-size: 18px
+  font-style: Helvetica
+  font-weight: 250
+  color: gray
+  width: 312px
+  text-align: left
+`;
+
+const Text = styled.div`
+  font-style: Helvetica
+  font-size: 12px
+  font-weight: 500
+  display: inline-block
+  margin-top: 16px
+  margin-bottom: 5px
+`;
+
+const Box = styled.div`
+  border: 1px solid #EBEBEB
+  text-align: center
+`;
+
+const Input = styled.input`
+  border: none
+  margin-top: 8px
+  margin-bottom: 8px
+  font-size: 18px
+  font-style: Helvetica
+  font-weight: 250
+  color: gray
+  width: 150px
+`;
+
+const PricePerNight = styled.div`
+  margin: 5px
+  padding-top: 10px
+  padding-bottom: 10px
+`;
+
+const Line = styled.div`
+  border-bottom-width: 1px
+  border-bottom-color: #EBEBEB
+  border-bottom-style: solid
+  margin-bottom: 10px
+`;
+
 const Wrapper = styled.section`
   padding-left: 24px
   padding-right: 24px
-  margin: 0px
+  margin: 50px
   border: 1px solid #e4e4e4
   box-sizing: border-box
   width: 376px
@@ -39,10 +90,14 @@ const Button = styled.button`
   border-style: solid
   border-color: #FE5A5A
   width: 326px
+  margin-top: 20px
+  margin-bottom: 5px
 `;
 
 const Calendar = styled.div`
-  display: inline-block
+  position: absolute
+  z-index: 1
+  background-color: white
   text-align: center
   font-size: 18px
   font-weight: 800
@@ -71,21 +126,38 @@ export default class BookingWidget extends React.Component {
         text: '1 guest',
         val: 1,
       },
+      isCalOpen: false,
     };
     this.selectDate = this.selectDate.bind(this);
     this.submitBooking = this.submitBooking.bind(this);
     this.selectGuests = this.selectGuests.bind(this);
+    this.openCal = this.openCal.bind(this);
+    this.checkInOrOut = this.checkInOrOut.bind(this);
+  }
+
+  openCal() {
+    this.setState({
+      isCalOpen: true,
+    });
+  }
+
+  checkInOrOut(event) {
+    const currView = event.target.id;
+    this.setState({
+      view: currView,
+      isCalOpen: true,
+    });
   }
 
   selectDate(dateVal) {
     const dateText = moment(dateVal).format('ddd, MMM D');
-    const currView = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
+    const currView = this.state.view;
     this.setState({
       [currView]: {
         text: dateText,
         val: dateVal,
       },
-      view: currView,
+      view: currView === 'checkin' ? 'checkout' : 'checkin',
     });
   }
 
@@ -124,40 +196,44 @@ export default class BookingWidget extends React.Component {
     return (
       <div>
         <Wrapper>
-          <div>
+          <PricePerNight>
             <span>
-              <Price>$89</Price>
+              <Price>$122</Price>
             </span>
-            <span> per night</span>
-          </div>
+            <Text>per night</Text>
+            <div>
+              <button type="button">
+                <span>*****</span>
+                <span> 105</span>
+              </button>
+            </div>
+          </PricePerNight>
 
-          <div>
-            <button type="button">
-              <span>*****</span>
-              <span> 105</span>
-            </button>
-          </div>
-
-          <div>
-            <div>--------------------</div>
-          </div>
+          <Line />
 
           <div>
             <form onSubmit={this.submitBooking}>
 
-              <div>
-                <label>
-                  Dates
-                </label>
-              </div>
+              <Text>
+                Dates
+              </Text>
 
-              <input type="text" value={this.state.checkin.text} />
-              <input type="text" value={this.state.checkout.text} />
+              <Box>
+                <Input
+                  type="text"
+                  id="checkin"
+                  value={this.state.checkin.text}
+                  onSelect={this.checkInOrOut}
+                />
+                <Input
+                  type="text"
+                  id="checkout"
+                  value={this.state.checkout.text}
+                  onSelect={this.checkInOrOut}
+                />
+              </Box>
 
-              <div>
-              </div>
-
-              <Calendar>
+              {this.state.isCalOpen && <Calendar>
                 <div>
                   <BookingCalendar
                     calendar={this.props.calendar}
@@ -165,26 +241,33 @@ export default class BookingWidget extends React.Component {
                     changeMonth={this.props.changeMonth}
                   />
                 </div>
-              </Calendar>
+              </Calendar>}
 
-              <div>
-                <label>
-                  Guests
-                </label>
-              </div>
-              <select value={this.state.guests.text} onChange={this.selectGuests}>
-                <option value="1 guest">1 guest</option>
-                <option value="2 guests">2 guests</option>
-                <option value="3 guests">3 guests</option>
-                <option value="4 guests">4 guests</option>
-                <option value="5 guests">5 guests</option>
-              </select>
+              <Text>
+                Guests
+              </Text>
+
+              <Box>
+                <div>
+                  <Select value={this.state.guests.text} onChange={this.selectGuests}>
+                    <option value="1 guest">1 guest</option>
+                    <option value="2 guests">2 guests</option>
+                    <option value="3 guests">3 guests</option>
+                    <option value="4 guests">4 guests</option>
+                    <option value="5 guests">5 guests</option>
+                  </Select>
+                </div>
+              </Box>
 
               <div>
                 <Button>
                   Book
                 </Button>
               </div>
+
+              <Text>
+                You won&#39;t be charged yet
+              </Text>
 
             </form>
           </div>
