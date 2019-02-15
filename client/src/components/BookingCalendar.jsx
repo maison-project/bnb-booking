@@ -19,6 +19,7 @@ const Month = styled.table`
   padding-top: 2px
   padding-bottom: 2px
   width: 300px
+  border-collapse: collapse
 `;
 
 const Day = styled.td`
@@ -26,9 +27,14 @@ const Day = styled.td`
   padding-top: 8px
   padding-bottom: 8px
   padding-right: 4px
-  padding-left: 8px
+  padding-left: 6px
   width: 32px
-  border: 1px solid #e4e4e4
+  border: ${props => props.id ? '1px solid #e4e4e4' : undefined}
+  text-decoration: ${props => props.status !== 'available' ? 'line-through' : undefined}
+  text-decoration-color: ${props => props.status !== 'available' ? 'gray' : undefined}
+  color: ${props => props.status !== 'available' ? 'gray' : undefined}
+  :hover: ${props => props.status === 'available' ? 'background-color: gray' : undefined}
+  cursor: ${props => props.status === 'available' ? 'pointer' : undefined}
 `;
 
 export default class BookingCalendar extends React.Component {
@@ -83,6 +89,7 @@ export default class BookingCalendar extends React.Component {
                 <Day
                   id={day.val}
                   onClick={day.status === 'available' ? this.handleDateClick : undefined}
+                  status={day.status}
                 >
                   {day.val && moment(day.val).format('D')}
                 </Day>

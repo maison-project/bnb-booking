@@ -42,7 +42,9 @@ const Button = styled.button`
 `;
 
 const Calendar = styled.div`
-  display: inline-block
+  position: absolute
+  z-index: 1
+  background-color: white
   text-align: center
   font-size: 18px
   font-weight: 800
@@ -71,21 +73,38 @@ export default class BookingWidget extends React.Component {
         text: '1 guest',
         val: 1,
       },
+      isCalOpen: false,
     };
     this.selectDate = this.selectDate.bind(this);
     this.submitBooking = this.submitBooking.bind(this);
     this.selectGuests = this.selectGuests.bind(this);
+    this.openCal = this.openCal.bind(this);
+    this.checkInOrOut = this.checkInOrOut.bind(this);
+  }
+
+  openCal() {
+    this.setState({
+      isCalOpen: true,
+    });
+  }
+
+  checkInOrOut(event) {
+    const currView = event.target.id;
+    this.setState({
+      view: currView,
+      isCalOpen: true,
+    });
   }
 
   selectDate(dateVal) {
     const dateText = moment(dateVal).format('ddd, MMM D');
-    const currView = (this.state.view === 'checkin') ? 'checkout' : 'checkin';
+    const currView = this.state.view;
     this.setState({
       [currView]: {
         text: dateText,
         val: dateVal,
       },
-      view: currView,
+      view: currView === 'checkin' ? 'checkout' : 'checkin',
     });
   }
 
@@ -151,13 +170,23 @@ export default class BookingWidget extends React.Component {
                 </label>
               </div>
 
-              <input type="text" value={this.state.checkin.text} />
-              <input type="text" value={this.state.checkout.text} />
+              <input
+                type="text"
+                id="checkin"
+                value={this.state.checkin.text}
+                onSelect={this.checkInOrOut}
+              />
+              <input
+                type="text"
+                id="checkout"
+                value={this.state.checkout.text}
+                onSelect={this.checkInOrOut}
+              />
 
               <div>
               </div>
 
-              <Calendar>
+              {this.state.isCalOpen && <Calendar>
                 <div>
                   <BookingCalendar
                     calendar={this.props.calendar}
@@ -165,7 +194,7 @@ export default class BookingWidget extends React.Component {
                     changeMonth={this.props.changeMonth}
                   />
                 </div>
-              </Calendar>
+              </Calendar>}
 
               <div>
                 <label>
