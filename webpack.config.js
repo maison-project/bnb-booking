@@ -12,6 +12,7 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?/,
+        exclude: /node_modules/,
         include: SRC_DIR,
         use: {
           loader: 'babel-loader'

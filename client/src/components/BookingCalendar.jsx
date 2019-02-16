@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -42,6 +43,23 @@ export default class BookingCalendar extends React.Component {
     super();
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleMonthClick = this.handleMonthClick.bind(this);
+    this.handleGlobalClick = this.handleGlobalClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleGlobalClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleGlobalClick);
+  }
+
+  handleGlobalClick(event) {
+    const isInputClick = event.target.id === 'checkin' || event.target.id === 'checkout';
+    const calNode = ReactDOM.findDOMNode(this);
+    if (!calNode.contains(event.target) && !isInputClick) {
+      this.props.closeCal();
+    }
   }
 
   handleDateClick(event) {
