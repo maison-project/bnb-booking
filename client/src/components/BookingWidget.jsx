@@ -67,10 +67,10 @@ const Wrapper = styled.section`
 const Price = styled.span`
   font-size: 22px
   font-weight: 800
-  font-family: Helvetica
+  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif
 `;
 
-const Button = styled.button`
+const BookButton = styled.button`
   font-family: Helvetica
   background-color: #FE5A5A
   color: white
@@ -94,6 +94,15 @@ const Button = styled.button`
   margin-bottom: 5px
 `;
 
+const ReviewButton = styled.button`
+  font-style: Helvetica
+  font-size: 12px
+  font-weight: 500
+  display: inline-block
+  margin-bottom: 5px
+  border: none
+`;
+
 const Calendar = styled.div`
   position: absolute
   z-index: 1
@@ -106,7 +115,9 @@ const Calendar = styled.div`
   padding-right: 8px
   padding-left: 8px
   border: 1px solid #e4e4e4
-  width: 300px
+  border-radius: 4px
+  width: 315px
+  margin-top: 8px
 `;
 
 export default class BookingWidget extends React.Component {
@@ -133,11 +144,18 @@ export default class BookingWidget extends React.Component {
     this.selectGuests = this.selectGuests.bind(this);
     this.openCal = this.openCal.bind(this);
     this.checkInOrOut = this.checkInOrOut.bind(this);
+    this.closeCal = this.closeCal.bind(this);
   }
 
   openCal() {
     this.setState({
       isCalOpen: true,
+    });
+  }
+
+  closeCal() {
+    this.setState({
+      isCalOpen: false,
     });
   }
 
@@ -151,13 +169,13 @@ export default class BookingWidget extends React.Component {
 
   selectDate(dateVal) {
     const dateText = moment(dateVal).format('ddd, MMM D');
-    const currView = this.state.view;
+    const { view } = this.state;
     this.setState({
-      [currView]: {
+      [view]: {
         text: dateText,
         val: dateVal,
       },
-      view: currView === 'checkin' ? 'checkout' : 'checkin',
+      view: view === 'checkin' ? 'checkout' : 'checkin',
     });
   }
 
@@ -202,10 +220,10 @@ export default class BookingWidget extends React.Component {
             </span>
             <Text>per night</Text>
             <div>
-              <button type="button">
+              <ReviewButton>
                 <span>*****</span>
                 <span> 105</span>
-              </button>
+              </ReviewButton>
             </div>
           </PricePerNight>
 
@@ -223,13 +241,13 @@ export default class BookingWidget extends React.Component {
                   type="text"
                   id="checkin"
                   value={this.state.checkin.text}
-                  onSelect={this.checkInOrOut}
+                  onClick={this.checkInOrOut}
                 />
                 <Input
                   type="text"
                   id="checkout"
                   value={this.state.checkout.text}
-                  onSelect={this.checkInOrOut}
+                  onClick={this.checkInOrOut}
                 />
               </Box>
 
@@ -239,6 +257,7 @@ export default class BookingWidget extends React.Component {
                     calendar={this.props.calendar}
                     selectDate={this.selectDate}
                     changeMonth={this.props.changeMonth}
+                    closeCal={this.closeCal}
                   />
                 </div>
               </Calendar>}
@@ -260,9 +279,9 @@ export default class BookingWidget extends React.Component {
               </Box>
 
               <div>
-                <Button>
+                <BookButton>
                   Book
-                </Button>
+                </BookButton>
               </div>
 
               <Text>

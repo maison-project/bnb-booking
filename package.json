@@ -11,7 +11,10 @@
   "scripts": {
     "seed": "mysql -u root < database/booking-schema.sql",
     "start": "nodemon server/index.js",
-    "dev:react": "webpack -d --watch"
+    "dev:react": "webpack -d --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",    
+    "test:coverage": "jest --coverage --colors"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -26,15 +29,21 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
     "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "jest": "^24.1.0",
+    "react-test-renderer": "^16.8.2",
     "sublime-linter": "^0.4.1",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
