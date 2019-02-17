@@ -7,7 +7,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       calendar: null,
-      updated: false,
     };
   }
 
@@ -26,14 +25,11 @@ class App extends React.Component {
       .then((response) => {
         return response.json();
       })
-      .then((grid) => {
+      .then((calendar) => {
         this.setState({
-          calendar: grid,
+          calendar: calendar,
         });
       });
-    this.setState({
-      updated: true,
-    });
   }
 
   postBooking(booking) {

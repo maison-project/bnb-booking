@@ -12,9 +12,9 @@ const Select = styled.select`
   font-size: 18px
   font-style: Helvetica
   font-weight: 250
+  text-align: left
   color: gray
   width: 312px
-  text-align: left
 `;
 
 const Text = styled.div`
@@ -31,7 +31,7 @@ const Box = styled.div`
   text-align: center
 `;
 
-const Input = styled.input`
+const DateInput = styled.input`
   border: none
   margin-top: 8px
   margin-bottom: 8px
@@ -39,7 +39,7 @@ const Input = styled.input`
   font-style: Helvetica
   font-weight: 250
   color: gray
-  width: 150px
+  width: 145px
 `;
 
 const PricePerNight = styled.div`
@@ -67,7 +67,7 @@ const Wrapper = styled.section`
 const Price = styled.span`
   font-size: 22px
   font-weight: 800
-  font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif
+  font-family: Helvetica, sans-serif
 `;
 
 const BookButton = styled.button`
@@ -168,8 +168,31 @@ export default class BookingWidget extends React.Component {
   }
 
   selectDate(dateVal) {
-    const dateText = moment(dateVal).format('ddd, MMM D');
-    const { view } = this.state;
+    const dateText = moment(dateVal).format('MM/DD/YYYY');
+    const { view, checkin, checkout } = this.state;
+
+    if (view === 'checkin' && checkout.val) {
+      if (dateVal >= checkout.val) {
+        this.setState({
+          checkout: {
+            text: 'Check out',
+            val: null,
+          },
+        });
+      }
+    }
+
+    if (view === 'checkout' && checkin.val) {
+      if (dateVal <= checkin.val) {
+        this.setState({
+          checkin: {
+            text: 'Check in',
+            val: null,
+          },
+        });
+      }
+    }
+
     this.setState({
       [view]: {
         text: dateText,
@@ -237,13 +260,13 @@ export default class BookingWidget extends React.Component {
               </Text>
 
               <Box>
-                <Input
+                <DateInput
                   type="text"
                   id="checkin"
                   value={this.state.checkin.text}
                   onClick={this.checkInOrOut}
                 />
-                <Input
+                <DateInput
                   type="text"
                   id="checkout"
                   value={this.state.checkout.text}
@@ -256,7 +279,6 @@ export default class BookingWidget extends React.Component {
                   <BookingCalendar
                     calendar={this.props.calendar}
                     selectDate={this.selectDate}
-                    changeMonth={this.props.changeMonth}
                     closeCal={this.closeCal}
                   />
                 </div>
