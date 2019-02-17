@@ -39,8 +39,12 @@ const Day = styled.td`
 `;
 
 export default class BookingCalendar extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { calendar } = this.props;
+    this.state = ({
+      currMonth: calendar[3],
+    });
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleMonthClick = this.handleMonthClick.bind(this);
     this.handleGlobalClick = this.handleGlobalClick.bind(this);
@@ -68,40 +72,49 @@ export default class BookingCalendar extends React.Component {
   }
 
   handleMonthClick(event) {
-    this.props.changeMonth();
+    const { calendar } = this.props;
+    if (event.target.id === 'next') {
+      this.setState((state) => ({
+        currMonth: calendar[calendar.indexOf(state.currMonth) + 1], 
+      }));
+    } else {
+      this.setState((state) => ({
+        currMonth: calendar[calendar.indexOf(state.currMonth) - 1], 
+      }));
+    }
   }
 
   render() {
-    const { calendar } = this.props;
+    const { currMonth } = this.state;
     return (
       <div>
 
         <div>
           <span>
-            <input type="button" onClick={this.handleMonthClick} />
+            <input type="button" id="prev" onClick={this.handleMonthClick} />
           </span>
 
           <span>
-            {moment(calendar[1][0].val).format('MMMM YYYY')}
+            {moment(currMonth[1][0].val).format('MMMM YYYY')}
           </span>
 
           <span>
-            <input type="button" onClick={this.handleMonthClick} />
+            <input type="button" id="next" onClick={this.handleMonthClick} />
           </span>
         </div>
 
-          <Weekdays>
-            <Weekday>Su</Weekday>
-            <Weekday>Mo</Weekday>
-            <Weekday>Tu</Weekday>
-            <Weekday>We</Weekday>
-            <Weekday>Th</Weekday>
-            <Weekday>Fr</Weekday>
-            <Weekday>Sa</Weekday>
-          </Weekdays>
+        <Weekdays>
+          <Weekday>Su</Weekday>
+          <Weekday>Mo</Weekday>
+          <Weekday>Tu</Weekday>
+          <Weekday>We</Weekday>
+          <Weekday>Th</Weekday>
+          <Weekday>Fr</Weekday>
+          <Weekday>Sa</Weekday>
+        </Weekdays>
 
         <Month>
-          {calendar.map((week) =>
+          {currMonth.map((week) =>
             <tr>
               {week.map((day) =>
                 <Day
