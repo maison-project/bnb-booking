@@ -20,7 +20,7 @@ export default class App extends React.Component {
     const homeId = 150;
     fetch('http://localhost:3002/api/bookings/' + homeId, {
       method: 'GET',
-      mode: 'cors',
+      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -39,7 +39,7 @@ export default class App extends React.Component {
     console.log(`${booking} was sent`);
     fetch('http://localhost:3002/api/bookings/', {
       method: 'POST',
-      mode: 'cors',
+      mode: 'no-cors',
       body: JSON.stringify({booking: booking}),
       headers: {
         'Content-Type': 'application/json',
