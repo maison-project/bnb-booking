@@ -18,7 +18,7 @@ export default class App extends React.Component {
 
   getCalendar() {
     const homeId = 150;
-    fetch('/localhost:3002/api/bookings/' + homeId, {
+    fetch('localhost:3002/api/bookings/' + homeId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export default class App extends React.Component {
 
   postBooking(booking) {
     console.log(`${booking} was sent`);
-    fetch('/localhost:3002/api/bookings/', {
+    fetch('localhost:3002/api/bookings/', {
       method: 'POST',
       body: JSON.stringify({booking: booking}),
       headers: {
