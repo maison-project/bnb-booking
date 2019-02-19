@@ -5,122 +5,122 @@ import moment from 'moment';
 import BookingCalendar from './BookingCalendar.jsx';
 
 const Select = styled.select`
-  background-color: white
-  border: none
-  margin-top: 8px
-  margin-bottom: 8px
-  font-size: 18px
+  background-color: white;
+  border: none;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 18px;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  font-weight: 250
-  text-align: left
-  color: gray
-  width: 312px
+  font-weight: 250;
+  text-align: left;
+  color: gray;
+  width: 312px;
 `;
 
 const Text = styled.div`
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  font-size: 12px
-  font-weight: 500
-  display: inline-block
-  margin-top: 16px
-  margin-bottom: 5px
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 16px;
+  margin-bottom: 5px;
 `;
 
 const Box = styled.div`
-  border: 1px solid #EBEBEB
-  text-align: center
+  border: 1px solid #EBEBEB;
+  text-align: center;
 `;
 
 const DateInput = styled.input`
-  border: none
-  margin-top: 8px
-  margin-bottom: 8px
-  font-size: 18px
+  border: none;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 18px;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  font-weight: 250
-  width: 140px
-  outline: none
-  color: ${props => (props.value === 'Check in' || props.value === 'Check out') ? 'gray' : undefined}
-  background: ${props => props.selected ? '#99ede6' : undefined}
+  font-weight: 250;
+  width: 140px;
+  outline: none;
+  color: ${props => (props.value === 'Check in' || props.value === 'Check out') ? 'gray' : undefined};
+  background: ${props => props.selected ? '#99ede6' : undefined};
 `;
 
 const PricePerNight = styled.div`
-  margin: 5px
-  padding-top: 10px
-  padding-bottom: 10px
+  margin: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 `;
 
 const Line = styled.div`
-  border-bottom-width: 1px
-  border-bottom-color: #EBEBEB
-  border-bottom-style: solid
-  margin-bottom: 10px
+  border-bottom-width: 1px;
+  border-bottom-color: #EBEBEB;
+  border-bottom-style: solid;
+  margin-bottom: 10px;
 `;
 
 const Wrapper = styled.section`
-  padding-left: 24px
-  padding-right: 24px
-  margin: 0px
-  border: 1px solid #e4e4e4
-  box-sizing: border-box
-  width: 376px
+  padding-left: 24px;
+  padding-right: 24px;
+  margin: 0px;
+  border: 1px solid #e4e4e4;
+  box-sizing: border-box;
+  width: 376px;
 `;
 
 const Price = styled.span`
-  font-size: 22px
-  font-weight: 800
+  font-size: 22px;
+  font-weight: 800;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 `;
 
 const BookButton = styled.button`
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  background-color: #FE5A5A
-  color: white
-  font-size: 16px
-  line-height: 24px
-  letter-spacing: normal
-  font-weight: 800
-  padding-top: 10px
-  padding-bottom: 10px
-  padding-right: 8px
-  padding-left: 8px
-  display: inline-block
-  text-align: center
-  cursor: pointer
-  border-radius: 4px
-  border-width: 2px
-  border-style: solid
-  border-color: #FE5A5A
-  width: 326px
-  margin-top: 20px
-  margin-bottom: 5px
+  background-color: #FE5A5A;
+  color: white;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: normal;
+  font-weight: 800;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 8px;
+  padding-left: 8px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #FE5A5A;
+  width: 326px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 `;
 
 const ReviewButton = styled.button`
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  font-size: 12px
-  font-weight: 500
-  display: inline-block
-  margin-bottom: 5px
-  border: none
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 5px;
+  border: none;
 `;
 
 const Calendar = styled.div`
-  position: absolute
-  z-index: 1
-  background-color: white
-  align: center
-  font-size: 18px
-  font-weight: 800
-  padding-top: 10px
-  padding-bottom: 10px
-  padding-right: 8px
-  padding-left: 8px
-  border: 1px solid #e4e4e4
-  border-radius: 4px
-  width: 315px
-  margin-top: 8px
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  align: center;
+  font-size: 18px;
+  font-weight: 800;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 8px;
+  padding-left: 8px;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  width: 315px;
+  margin-top: 8px;
 `;
 
 export default class BookingWidget extends React.Component {
