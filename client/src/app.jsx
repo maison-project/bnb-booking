@@ -8,6 +8,8 @@ export default class App extends React.Component {
     this.state = {
       calendar: null,
     };
+    this.getCalendar = this.getCalendar.bind(this);
+    this.postBooking = this.postBooking.bind(this);
   }
 
   componentDidMount() {
