@@ -10,7 +10,7 @@ const PORT = 3002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/../client/dist')));
+app.use(express.static(path.join(__dirname, '/../public')));
 
 app.get('/api/bookings/:homeId', (req, res) => {
   db.getBookingsById(req.params.homeId, (err, bookings) => {

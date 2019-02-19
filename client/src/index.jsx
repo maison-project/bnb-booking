@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BookingWidget from './components/BookingWidget.jsx';
+import BookingWidget from './BookingWidget.jsx';
 
 class App extends React.Component {
   constructor(props) {
