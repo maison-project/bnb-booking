@@ -10,7 +10,7 @@ const Select = styled.select`
   margin-top: 8px
   margin-bottom: 8px
   font-size: 18px
-  font-style: Helvetica
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   font-weight: 250
   text-align: left
   color: gray
@@ -18,7 +18,7 @@ const Select = styled.select`
 `;
 
 const Text = styled.div`
-  font-style: Helvetica
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   font-size: 12px
   font-weight: 500
   display: inline-block
@@ -36,16 +36,19 @@ const DateInput = styled.input`
   margin-top: 8px
   margin-bottom: 8px
   font-size: 18px
-  font-style: Helvetica
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   font-weight: 250
-  color: gray
-  width: 145px
+  width: 140px
+  outline: none
+  color: ${props => (props.value === 'Check in' || props.value === 'Check out') ? 'gray' : undefined}
+  background: ${props => props.selected ? '#99ede6' : undefined}
 `;
 
 const PricePerNight = styled.div`
   margin: 5px
   padding-top: 10px
   padding-bottom: 10px
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 `;
 
 const Line = styled.div`
@@ -58,7 +61,7 @@ const Line = styled.div`
 const Wrapper = styled.section`
   padding-left: 24px
   padding-right: 24px
-  margin: 50px
+  margin: 0px
   border: 1px solid #e4e4e4
   box-sizing: border-box
   width: 376px
@@ -67,11 +70,11 @@ const Wrapper = styled.section`
 const Price = styled.span`
   font-size: 22px
   font-weight: 800
-  font-family: Helvetica, sans-serif
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
 `;
 
 const BookButton = styled.button`
-  font-family: Helvetica
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   background-color: #FE5A5A
   color: white
   font-size: 16px
@@ -95,7 +98,7 @@ const BookButton = styled.button`
 `;
 
 const ReviewButton = styled.button`
-  font-style: Helvetica
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   font-size: 12px
   font-weight: 500
   display: inline-block
@@ -107,7 +110,7 @@ const Calendar = styled.div`
   position: absolute
   z-index: 1
   background-color: white
-  text-align: center
+  align: center
   font-size: 18px
   font-weight: 800
   padding-top: 10px
@@ -156,6 +159,7 @@ export default class BookingWidget extends React.Component {
   closeCal() {
     this.setState({
       isCalOpen: false,
+      view: null,
     });
   }
 
@@ -179,6 +183,8 @@ export default class BookingWidget extends React.Component {
             val: null,
           },
         });
+      } else {
+        this.closeCal();
       }
     }
 
@@ -190,6 +196,8 @@ export default class BookingWidget extends React.Component {
             val: null,
           },
         });
+      } else {
+        this.closeCal();
       }
     }
 
@@ -214,26 +222,30 @@ export default class BookingWidget extends React.Component {
   }
 
   submitBooking(event) {
-    const { checkin, checkout, guests } = this.state;
-    const home_id = 150;
-    const user_id = 485;
-    const check_in = moment(checkin.val).format('YYYY/MM/DD');
-    const check_out = moment(checkout.val).format('YYYY/MM/DD');
-    const price_per_night = 89;
-    const no_guests = guests.val;
-    const booking = [
-      home_id,
-      user_id,
-      check_in,
-      check_out,
-      price_per_night,
-      no_guests,
-    ];
-    this.props.postBooking(booking);
-    event.preventDefault();
+    if (event.target.id === 'book') {
+      const { checkin, checkout, guests } = this.state;
+      const home_id = 150;
+      const user_id = 485;
+      const check_in = moment(checkin.val).format('YYYY/MM/DD');
+      const check_out = moment(checkout.val).format('YYYY/MM/DD');
+      const price_per_night = 89;
+      const no_guests = guests.val;
+      const booking = [
+        home_id,
+        user_id,
+        check_in,
+        check_out,
+        price_per_night,
+        no_guests,
+      ];
+      this.props.postBooking(booking);
+      event.preventDefault();
+    }
   }
 
   render() {
+    const { calendar } = this.props;
+    const { checkin, checkout, view } = this.state;
     return (
       <div>
         <Wrapper>
@@ -263,23 +275,27 @@ export default class BookingWidget extends React.Component {
                 <DateInput
                   type="text"
                   id="checkin"
-                  value={this.state.checkin.text}
+                  value={checkin.text}
                   onClick={this.checkInOrOut}
+                  selected={view === 'checkin'}
                 />
                 <DateInput
                   type="text"
                   id="checkout"
-                  value={this.state.checkout.text}
+                  value={checkout.text}
                   onClick={this.checkInOrOut}
+                  selected={view === 'checkout'}
                 />
               </Box>
 
               {this.state.isCalOpen && <Calendar>
                 <div>
                   <BookingCalendar
-                    calendar={this.props.calendar}
+                    calendar={calendar}
                     selectDate={this.selectDate}
                     closeCal={this.closeCal}
+                    checkin={checkin}
+                    checkout={checkout}
                   />
                 </div>
               </Calendar>}
@@ -301,7 +317,7 @@ export default class BookingWidget extends React.Component {
               </Box>
 
               <div>
-                <BookButton>
+                <BookButton id="book" onClick={this.submitBooking}>
                   Book
                 </BookButton>
               </div>
