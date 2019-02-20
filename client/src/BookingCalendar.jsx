@@ -4,13 +4,13 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  text-align: center
-  padding: 10px
+  text-align: center;
+  padding: 10px;
 `;
 
 const MonthNameRow = styled.div`
   display: inline-block
-  vertical-align: middle
+  vertical-align: middle;
 `;
 
 const MonthName = styled.span`
@@ -48,7 +48,7 @@ const Weekday = styled.td`
 const WeekdayName = styled.small`
   font-size: 12px
   color: gray
-  font-weight: 400
+  font-weight: 400;
 `;
 
 const Month = styled.table`

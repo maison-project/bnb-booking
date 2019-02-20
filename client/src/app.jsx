@@ -8,15 +8,10 @@ export default class App extends React.Component {
     this.state = {
       calendar: null,
     };
-    this.getCalendar = this.getCalendar.bind(this);
     this.postBooking = this.postBooking.bind(this);
   }
 
   componentDidMount() {
-    this.getCalendar();
-  }
-
-  getCalendar() {
     const homeId = 150;
     fetch('http://localhost:3002/api/bookings/' + homeId, {
       method: 'GET',
@@ -25,14 +20,14 @@ export default class App extends React.Component {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((calendar) => {
+      .then(response => response.json())
+      .then(JSONresp => JSONresp) 
+      .then((calendar) => { 
         this.setState({
           calendar: calendar,
         });
-      });
+      })
+      .catch(error => console.error(error));
   }
 
   postBooking(booking) {
@@ -51,15 +46,16 @@ export default class App extends React.Component {
   }
 
   render() {
+    const { calendar } = this.state;
     return (
       <div>
-        {this.state.calendar &&
-          <div>
-            <BookingWidget 
-              calendar={this.state.calendar}
-              postBooking={this.postBooking}
-            />
-          </div>
+        {calendar &&
+        <div>
+          <BookingWidget 
+            calendar={calendar}
+            postBooking={this.postBooking}
+          />
+        </div>
         }
       </div>
     );
