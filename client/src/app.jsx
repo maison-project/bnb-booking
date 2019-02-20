@@ -15,7 +15,6 @@ export default class App extends React.Component {
     const homeId = 150;
     fetch('http://localhost:3002/api/bookings/' + homeId, {
       method: 'GET',
-      mode: 'no-cors',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -47,16 +46,21 @@ export default class App extends React.Component {
 
   render() {
     const { calendar } = this.state;
+    if (!calendar) {
+      return (
+        <div>
+          { /* Failed to load data, please try again */ }
+        </div>
+      );
+    }
     return (
       <div>
-        {calendar &&
         <div>
           <BookingWidget 
             calendar={calendar}
             postBooking={this.postBooking}
           />
         </div>
-        }
       </div>
     );
   }
