@@ -13,7 +13,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const homeId = 150;
-    fetch('http://localhost:3002/api/bookings/' + homeId, {
+    fetch('/api/bookings/' + homeId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
