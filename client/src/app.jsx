@@ -13,15 +13,15 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const homeId = 150;
-    fetch('/api/bookings/' + homeId, {
+    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/' + homeId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(response => response.json())
-      .then(JSONresp => JSONresp) 
-      .then((calendar) => { 
+      .then(JSONresp => JSONresp)
+      .then((calendar) => {
         this.setState({
           calendar: calendar,
         });
@@ -31,7 +31,7 @@ export default class App extends React.Component {
 
   postBooking(booking) {
     console.log(`${booking} was sent`);
-    fetch('/api/bookings/', {
+    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/', {
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify({booking: booking}),

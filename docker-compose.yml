@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  booking:
+    build: .
+    depends_on:
+      - 'database'
+    ports: 
+      - '1000:3002'
+
+  database:
+    build: database/

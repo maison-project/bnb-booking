@@ -6,7 +6,7 @@ const db = require('../database');
 const { cal } = require('./calendarHelper');
 
 const app = express();
-const PORT = process.env.PORT || 3002;
+const PORT = 3002;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 app.get('/api/bookings/:homeId', (req, res) => {
   db.getBookingsById(req.params.homeId, (err, bookings) => {
     if (err) {
-      // TO DO
+      console.log('err from db');
     } else {
       cal(bookings, (error, grid) => {
         if (error) {

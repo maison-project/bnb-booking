@@ -1,9 +1,4 @@
 node_modules/
 .gitignore
-.elasticbeanstalk/
 client/dist/bundle.js
 database/sql-config.js
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
