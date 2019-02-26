@@ -12,7 +12,13 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const homeId = 150;
+      let homeId;
+      if (window.location.href.split('?')[1]) {
+        homeId = window.location.href.split('?')[1];
+       } else {
+        window.location = window.location.href + "?100";
+       }
+
     fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/' + homeId, {
       method: 'GET',
       headers: {
@@ -56,7 +62,7 @@ export default class App extends React.Component {
     return (
       <div>
         <div>
-          <BookingWidget 
+          <BookingWidget
             calendar={calendar}
             postBooking={this.postBooking}
           />

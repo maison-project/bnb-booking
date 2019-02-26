@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const expressStaticGzip = require('express-static-gzip');
 
 const db = require('../database');
 const { cal } = require('./calendarHelper');
@@ -8,9 +9,12 @@ const { cal } = require('./calendarHelper');
 const app = express();
 const PORT = 3002;
 
+app.use('/', expressStaticGzip(path.join(__dirname, '/../public'), {
+  enableBrotli: true,
+  orderPreference: ['br', 'gz'],
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, '/../public')));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

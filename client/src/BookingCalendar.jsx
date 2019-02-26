@@ -6,18 +6,21 @@ import styled from 'styled-components';
 const Container = styled.div`
   text-align: center;
   padding: 10px;
+  padding: 20px;
 `;
 
 const MonthNameRow = styled.div`
-  display: inline-block
+  display: flex;
+  flex-direction: row;
+  justify-content:space-between
   vertical-align: middle;
 `;
 
-const MonthName = styled.span`
+const MonthName = styled.div`
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   display: inline-block
   text-align: center
-  width: 210px
+  width: 200px
 `;
 
 const MonthButton = styled.button`
@@ -31,6 +34,7 @@ const MonthButton = styled.button`
   height: 33px
   color: gray
   cursor: pointer
+  font-size: 11px;
 `;
 
 const Weekdays = styled.table`
@@ -130,18 +134,17 @@ export default class BookingCalendar extends React.Component {
     return (
       <Container>
         <div>
-          <MonthButton id="prev" onClick={this.handleMonthClick}>
-          Prev
-          </MonthButton>
           <MonthNameRow>
+            <MonthButton id="prev" onClick={this.handleMonthClick}>
+            Prev
+            </MonthButton>
             <MonthName>
               {moment(currMonth[1][0].val).format('MMMM YYYY')}
             </MonthName>
+            <MonthButton value="Next" id="next" onClick={this.handleMonthClick}>
+            Next
+            </MonthButton>
           </MonthNameRow>
-
-          <MonthButton value="Next" id="next" onClick={this.handleMonthClick}>
-          Next
-          </MonthButton>
         </div>
 
         <Weekdays>
