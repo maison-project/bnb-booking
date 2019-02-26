@@ -65,6 +65,7 @@ const Wrapper = styled.section`
   border: 1px solid #e4e4e4;
   box-sizing: border-box;
   width: 376px;
+  background-color: white;
 `;
 
 const Price = styled.span`
@@ -246,6 +247,7 @@ export default class BookingWidget extends React.Component {
   render() {
     const { calendar } = this.props;
     const { checkin, checkout, view } = this.state;
+
     return (
       <div>
         <Wrapper>

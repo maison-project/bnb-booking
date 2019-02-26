@@ -1,6 +1,7 @@
 var path = require('path');
 var SRC_DIR = path.join(__dirname, '/client/src');
 var DIST_DIR = path.join(__dirname, '/client/dist');
+var Compression = require('compression-webpack-plugin');
 
 module.exports = {
   entry: `${__dirname}/client/src/index.jsx`,
@@ -25,4 +26,13 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  plugins: [
+    new Compression({
+      filename: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.7,
+    }),
+  ],
 };

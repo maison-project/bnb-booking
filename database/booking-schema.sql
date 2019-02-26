@@ -29,6 +29,8 @@ CREATE TABLE prices (
   UNIQUE KEY (pricing_id)
 );
 
+SET @@GLOBAL.wait_timeout=31536000;
+
 /* Execute from command line by typing:
  *   mysql -u <USER> < booking-schema.sql
  *   e.g. "mysql -u root < booking-schema.sql"

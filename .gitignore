@@ -1,3 +1,4 @@
-node_modules
+node_modules/
+.gitignore
 client/dist/bundle.js
 database/sql-config.js

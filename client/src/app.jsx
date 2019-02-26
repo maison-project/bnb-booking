@@ -12,16 +12,22 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    const homeId = 150;
-    fetch('http://localhost:3002/api/bookings/' + homeId, {
+      let homeId;
+      if (window.location.href.split('?')[1]) {
+        homeId = window.location.href.split('?')[1];
+       } else {
+        window.location = window.location.href + "?100";
+       }
+
+    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/' + homeId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(response => response.json())
-      .then(JSONresp => JSONresp) 
-      .then((calendar) => { 
+      .then(JSONresp => JSONresp)
+      .then((calendar) => {
         this.setState({
           calendar: calendar,
         });
@@ -31,7 +37,7 @@ export default class App extends React.Component {
 
   postBooking(booking) {
     console.log(`${booking} was sent`);
-    fetch('http://localhost:3002/api/bookings/', {
+    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/', {
       method: 'POST',
       mode: 'no-cors',
       body: JSON.stringify({booking: booking}),
@@ -56,7 +62,7 @@ export default class App extends React.Component {
     return (
       <div>
         <div>
-          <BookingWidget 
+          <BookingWidget
             calendar={calendar}
             postBooking={this.postBooking}
           />
