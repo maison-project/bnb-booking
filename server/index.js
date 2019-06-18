@@ -16,13 +16,14 @@ app.use('/', expressStaticGzip(path.join(__dirname, '/../public'), {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
 app.get('/api/bookings/:homeId', (req, res) => {
+  // console.log('getting bookings with homedID')
   db.getBookingsById(req.params.homeId, (err, bookings) => {
     if (err) {
       console.log('err from db');
@@ -49,8 +50,8 @@ app.get('/api/pricing/:homeId', (req, res) => {
 });
 
 app.post('/api/bookings', (req, res) => {
-  const booking = req.body.booking;
-  console.log(booking);
+  const {booking} = req.body;
+  // console.log(booking);
   db.createBooking(booking, (err) => {
     if (err) {
       // send error
