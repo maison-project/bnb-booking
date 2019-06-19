@@ -12,14 +12,14 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-      let homeId;
-      if (window.location.href.split('?')[1]) {
-        homeId = window.location.href.split('?')[1];
-       } else {
-        window.location = window.location.href + "?100";
-       }
+    let homeId;
+    if (window.location.href.split('?')[1]) {
+      homeId = window.location.href.split('?')[1];
+    } else {
+      window.location = `${window.location.href}?100`;
+    }
 
-    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/' + homeId, {
+    fetch(`api/bookings/${homeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -28,8 +28,10 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(JSONresp => JSONresp)
       .then((calendar) => {
+        console.log('this is', homeId);
+        console.log(calendar);
         this.setState({
-          calendar: calendar,
+          calendar,
         });
       })
       .catch(error => console.error(error));
@@ -37,17 +39,15 @@ export default class App extends React.Component {
 
   postBooking(booking) {
     console.log(`${booking} was sent`);
-    fetch('http://ec2-18-191-62-37.us-east-2.compute.amazonaws.com/api/bookings/', {
+    fetch('api/bookings/', {
       method: 'POST',
       mode: 'no-cors',
-      body: JSON.stringify({booking: booking}),
+      body: JSON.stringify({ booking }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => {
-        return response.json();
-      })
+      .then(response => response.json());
   }
 
   render() {
@@ -55,7 +55,7 @@ export default class App extends React.Component {
     if (!calendar) {
       return (
         <div>
-          { /* Failed to load data, please try again */ }
+          { /* Failed to load data, please try again */}
         </div>
       );
     }
