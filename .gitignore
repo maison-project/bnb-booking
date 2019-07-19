@@ -3,3 +3,4 @@ database/sql-config.js
 database/sql-config.example.js
 public/bundle.js
 public/bundle.js.gz
+newrelic.js
