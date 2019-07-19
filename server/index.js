@@ -1,3 +1,4 @@
+const newrelic = require('newrelic');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -50,7 +51,7 @@ app.get('/api/pricing/:homeId', (req, res) => {
 });
 
 app.post('/api/bookings', (req, res) => {
-  const {booking} = req.body;
+  const { booking } = req.body;
   // console.log(booking);
   db.createBooking(booking, (err) => {
     if (err) {
