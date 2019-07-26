@@ -4,8 +4,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const expressStaticGzip = require('express-static-gzip');
 
-const db = require('../database');
+// const db = require('../database');
 const { cal } = require('./calendarHelper');
+
+const db = require('../database/controller.js');
 
 const app = express();
 const PORT = 3002;
@@ -23,44 +25,94 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/bookings/:homeId', (req, res) => {
-  // console.log('getting bookings with homeId', homeId)
-  db.getBookingsById(req.params.homeId, (err, bookings) => {
+app.get('/api/bookings/:home_id', (req, res) => {
+  const selectedHome = req.params.home_id;
+  db.getBookingsOnly(selectedHome, (err, data) => {
     if (err) {
-      console.log('err from db');
+      res.send('error with retrieval');
+      res.status(404);
     } else {
-      cal(bookings, (error, grid) => {
-        if (error) {
-          console.log('no calendar');
-        } else {
-          res.json(grid);
-        }
-      });
+      res.send(data.rows);
     }
   });
 });
 
-app.get('/api/pricing/:homeId', (req, res) => {
-  db.getPricingById(req.params.homeId, (err, pricing) => {
+app.get('/api/homes/:home_id', (req, res) => {
+  const selectedHome = req.params.home_id;
+  db.getHomes(selectedHome, (err, data) => {
     if (err) {
-      // send error
+      res.send('error retrieving home');
+      res.status(404);
     } else {
-      res.json(pricing);
+      res.send(data.rows);
     }
   });
 });
+// app.get('/api/bookings/:home_id', (req, res) => {
+//   const selectedHome = req.params.home_id;
+//   db.getBookings(selectedHome, (err, data) => {
+//     if (err) {
+//       res.send('error with retrieval');
+//       res.status(404);
+//     } else {
+//       res.send(data.rows);
+//     }
+//   });
+// });
 
 app.post('/api/bookings', (req, res) => {
-  const { booking } = req.body;
-  // console.log(booking);
-  db.createBooking(booking, (err) => {
+  const data = req.body;
+  // console.log(data);
+  db.addBooking(data, (err, results) => {
     if (err) {
-      // send error
+      res.status(400);
+      res.send('cannot complete booking');
     } else {
-      res.send('success');
+      res.status(202);
+      res.send('successfully booked');
+      // console.log('server receieved', results);
     }
   });
 });
+
+
+app.put('/api/bookings', (req, res) => {
+  const data = req.body;
+  // console.log('testing data', data);
+  db.updateBooking(data, (err, results) => {
+    if (err) {
+      res.status(400);
+      res.send('something went wrong, unable to update');
+    } else {
+      res.send('successfully updated booking');
+    }
+  });
+});
+
+app.delete('/api/bookings', (req, res) => {
+  const data = req.body;
+  db.deleteBooking(data, (err, results) => {
+    if (err) {
+      res.status(400);
+      res.send('unable to access booking');
+    } else {
+      res.send('booking deleted');
+    }
+  });
+});
+
+
+// app.post('/api/bookings', (req, res) => {
+//   const { booking } = req.body;
+//   // console.log(booking);
+//   db.createBooking(booking, (err) => {
+//     if (err) {
+//       // send error
+//     } else {
+//       res.send('success');
+//     }
+//   });
+// });
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
