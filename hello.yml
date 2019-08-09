@@ -1,0 +1,22 @@
+config:
+  target: 'http://localhost:3002'
+  phases:
+    - duration: 80
+      arrivalRate: 200
+    - duration: 80
+      arrivalRate: 400
+    - duration: 80
+      arrivalRate: 600
+scenarios:
+  - flow:
+    - post:
+        url: "/api/bookings"
+        json:
+          confirm_number: "{{$randomString()}}"
+          check_in: "2019-10-19"
+          check_out: "2019-10-23"
+          home_id: "{{$randomNumber(1, 10000000)}}"
+          num_of_adults: "{{$randomNumber(2, 12)}}"
+          num_of_children: "{{$randomNumber(0, 5)}}"
+          num_of_infants: "{{$randomNumber(0, 3)}}"
+

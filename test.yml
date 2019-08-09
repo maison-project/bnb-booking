@@ -1,0 +1,46 @@
+config:
+  target: 'http://localhost:3002'
+  phases:
+    - duration: 100
+      arrivalRate: 30
+    - duration: 100
+      arrivalRate: 60
+    - duration: 100
+      arrivalRate: 90
+scenarios:
+    - name: "Get home in cache"
+      weight: 15
+      flow:
+        - loop:
+            - get:
+                url: "/api/homes/{{randomNumber(1, 1000)}}"
+          count: 15
+    - name: "Get bookings in cache"
+      weight: 15
+      flow:
+        - loop:
+            - get:
+                url: "/api/bookings/{{$randomNumber(1, 1000)}}"
+          count: 15
+    - name: "get remaining homes"
+      weight: 30
+      flow:
+        - loop:
+            - get:
+               url: "/api/homes/{{randomNumber(1001, 10000000)}}"
+          count: 15
+    - name: "Get remaining bookings"
+      weight: 30
+      flow:
+        - loop:
+            - get:
+                url: "/api/bookings/{{$randomNumber(1001, 10000000)}}"
+          count: 15
+
+
+
+
+
+# defaults:
+#   headers:
+#     x-my-service-auth: '987401838271002188298567'
