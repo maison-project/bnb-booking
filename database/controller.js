@@ -94,4 +94,5 @@ module.exports = {
   addBooking,
   updateBooking,
   deleteBooking,
+  // getBookings,
 };
